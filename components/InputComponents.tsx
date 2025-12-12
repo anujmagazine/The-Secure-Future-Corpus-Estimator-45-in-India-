@@ -5,6 +5,7 @@ interface NumberInputProps {
   value: number;
   onChange: (val: number) => void;
   prefix?: string;
+  suffix?: string;
   min?: number;
   max?: number;
   step?: number;
@@ -39,7 +40,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({ label, value, onChange
   );
 };
 
-export const SliderInput: React.FC<NumberInputProps> = ({ label, value, onChange, min = 0, max = 100, step = 1, prefix }) => {
+export const SliderInput: React.FC<NumberInputProps> = ({ label, value, onChange, min = 0, max = 100, step = 1, prefix, suffix }) => {
   // Calculate percentage for background gradient
   const percentage = ((value - min) / (max - min)) * 100;
   
@@ -48,7 +49,7 @@ export const SliderInput: React.FC<NumberInputProps> = ({ label, value, onChange
       <div className="flex justify-between mb-2">
         <label className="text-slate-300 text-sm font-medium">{label}</label>
         <span className="text-premium-gold font-bold font-mono">
-          {prefix}{value}{!prefix && '%'}
+          {prefix}{value}{suffix}
         </span>
       </div>
       <input
@@ -64,8 +65,8 @@ export const SliderInput: React.FC<NumberInputProps> = ({ label, value, onChange
         }}
       />
       <div className="flex justify-between text-xs text-slate-500 mt-1">
-        <span>{prefix}{min}</span>
-        <span>{prefix}{max}</span>
+        <span>{prefix}{min}{suffix}</span>
+        <span>{prefix}{max}{suffix}</span>
       </div>
     </div>
   );

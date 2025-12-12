@@ -135,12 +135,14 @@ const App: React.FC = () => {
                 value={state.retirementAge} 
                 onChange={(v) => handleUpdate('retirementAge', v)}
                 min={40} max={75}
+                suffix=" Years"
               />
               <SliderInput 
                 label="Life Expectancy" 
                 value={state.lifeExpectancy} 
                 onChange={(v) => handleUpdate('lifeExpectancy', v)}
                 min={70} max={100}
+                suffix=" Years"
               />
             </GlassCard>
 
@@ -182,7 +184,8 @@ const App: React.FC = () => {
                 label="Inflation Rate" 
                 value={state.assumedInflation} 
                 onChange={(v) => handleUpdate('assumedInflation', v)}
-                min={4} max={10} step={0.5} prefix=""
+                min={4} max={10} step={0.5} 
+                suffix="%"
               />
               <SelectInput 
                 label="Post-Retirement ROI"
