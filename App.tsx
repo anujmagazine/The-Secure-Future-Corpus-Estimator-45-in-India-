@@ -10,7 +10,7 @@ import { GlassCard, NumberInput, SliderInput, SelectInput } from './components/I
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine 
 } from 'recharts';
-import { TrendingUp, ShieldCheck, AlertCircle, ChevronRight, Loader2, Sparkles } from 'lucide-react';
+import { TrendingUp, ShieldCheck, AlertCircle, ChevronRight, Loader2, Sparkles, BookOpen, Info } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
 
 // -- Initial State --
@@ -25,6 +25,61 @@ const INITIAL_STATE: CalculatorState = {
   postRetirementROI: InvestmentProfile.BALANCED,
   specificGoals: '',
 };
+
+const ExplanationSection = ({ state }: { state: CalculatorState }) => {
+  const realRate = (((1 + state.postRetirementROI)/(1 + state.assumedInflation/100) - 1) * 100).toFixed(2);
+  
+  return (
+    <div className="mt-12 mb-8">
+      <div className="flex items-center gap-2 mb-6">
+        <BookOpen className="text-premium-gold w-5 h-5" />
+        <h3 className="text-xl font-serif text-white">Methodology & Assumptions</h3>
+      </div>
+      
+      <GlassCard className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="space-y-3">
+          <h4 className="font-semibold text-slate-100 flex items-center gap-2 text-sm uppercase tracking-wider">
+            <Info size={14} className="text-premium-gold" /> Inflation Reality
+          </h4>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            We inflate your current monthly expenses of <strong>{formatINR(state.currentMonthlyExpenses)}</strong> annually by <strong>{state.assumedInflation}%</strong>. 
+            This ensures your corpus reflects the actual purchasing power needed when you retire at age {state.retirementAge}.
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          <h4 className="font-semibold text-slate-100 flex items-center gap-2 text-sm uppercase tracking-wider">
+            <Info size={14} className="text-premium-gold" /> Real Rate of Return
+          </h4>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            While your investments may earn <strong>{(state.postRetirementROI * 100).toFixed(1)}%</strong>, inflation eats into that growth. 
+            The calculator uses the effective "Real Rate of Return" (~<strong>{realRate}%</strong>) to determine how long your money effectively lasts.
+          </p>
+        </div>
+        
+        <div className="space-y-3">
+          <h4 className="font-semibold text-slate-100 flex items-center gap-2 text-sm uppercase tracking-wider">
+            <Info size={14} className="text-premium-gold" /> Existing Wealth
+          </h4>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Your current savings of <strong>{formatCompactINR(state.existingSavings)}</strong> are not stagnant. 
+            We project them to grow at a standard equity benchmark of <strong>10% annually</strong> (pre-retirement) to help offset the required target.
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          <h4 className="font-semibold text-slate-100 flex items-center gap-2 text-sm uppercase tracking-wider">
+            <Info size={14} className="text-premium-gold" /> Safety Buffer
+          </h4>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            The math solves for a <strong>Zero Balance</strong> exactly at age <strong>{state.lifeExpectancy}</strong>. 
+            Living beyond this age is the primary risk, which is why we recommend estimating a higher life expectancy for safety.
+          </p>
+        </div>
+      </GlassCard>
+    </div>
+  )
+}
 
 const App: React.FC = () => {
   const [state, setState] = useState<CalculatorState>(INITIAL_STATE);
@@ -359,6 +414,10 @@ const App: React.FC = () => {
 
           </div>
         </div>
+        
+        {/* Explanation Section */}
+        <ExplanationSection state={state} />
+
       </main>
     </div>
   );
