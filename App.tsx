@@ -42,8 +42,8 @@ const ExplanationSection = ({ state }: { state: CalculatorState }) => {
             <Info size={14} className="text-premium-gold" /> Inflation Reality
           </h4>
           <p className="text-slate-400 text-sm leading-relaxed">
-            We inflate your current monthly expenses of <strong>{formatINR(state.currentMonthlyExpenses)}</strong> annually by <strong>{state.assumedInflation}%</strong>. 
-            This ensures your corpus reflects the actual purchasing power needed when you retire at age {state.retirementAge}.
+            We inflate your current <strong>household monthly expenses</strong> of <strong>{formatINR(state.currentMonthlyExpenses)}</strong> annually by <strong>{state.assumedInflation}%</strong>. 
+            This ensures your corpus maintains the purchasing power for the entire family.
           </p>
         </div>
 
@@ -69,11 +69,11 @@ const ExplanationSection = ({ state }: { state: CalculatorState }) => {
 
         <div className="space-y-3">
           <h4 className="font-semibold text-slate-100 flex items-center gap-2 text-sm uppercase tracking-wider">
-            <Info size={14} className="text-premium-gold" /> Safety Buffer
+            <Info size={14} className="text-premium-gold" /> Family Protection
           </h4>
           <p className="text-slate-400 text-sm leading-relaxed">
-            The math solves for a <strong>Zero Balance</strong> exactly at age <strong>{state.lifeExpectancy}</strong>. 
-            Living beyond this age is the primary risk, which is why we recommend estimating a higher life expectancy for safety.
+            The math solves for the corpus to last until age <strong>{state.lifeExpectancy}</strong>. 
+            For couples, we highly recommend setting this to the <strong>younger spouse's</strong> life expectancy to ensure the survivor is fully covered.
           </p>
         </div>
       </GlassCard>
@@ -170,7 +170,7 @@ const App: React.FC = () => {
                 </span>
               </h1>
               <p className="text-slate-400">
-                Precision planning for your golden years. Input your financial vitals below.
+                Precision planning for your household's golden years. Input your financial vitals below.
               </p>
             </div>
 
@@ -180,7 +180,7 @@ const App: React.FC = () => {
                 Personal Details
               </h3>
               <NumberInput 
-                label="Current Age" 
+                label="Your Age" 
                 value={state.currentAge} 
                 onChange={(v) => handleUpdate('currentAge', v)}
                 min={25} max={80} 
@@ -199,6 +199,10 @@ const App: React.FC = () => {
                 min={70} max={100}
                 suffix=" Years"
               />
+               <p className="text-xs text-slate-500 -mt-4 mb-2 flex items-center gap-1">
+                 <ShieldCheck size={12} className="text-premium-gold"/>
+                 Tip: Set to <strong>younger spouse's</strong> expectancy for survivor coverage.
+              </p>
             </GlassCard>
 
             <GlassCard>
@@ -207,11 +211,14 @@ const App: React.FC = () => {
                 Financial Baseline
               </h3>
               <NumberInput 
-                label="Monthly Expenses (Current)" 
+                label="Household Monthly Expenses" 
                 value={state.currentMonthlyExpenses} 
                 onChange={(v) => handleUpdate('currentMonthlyExpenses', v)}
                 prefix="₹"
               />
+              <p className="text-xs text-slate-500 -mt-2 mb-4 pl-1">
+                 Include all family living costs, insurance, & medical.
+              </p>
               <SelectInput 
                 label="Retirement Lifestyle"
                 value={state.lifestyleFactor}
